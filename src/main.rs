@@ -155,8 +155,12 @@ impl eframe::App for PumpkinFilter {
                 if  list.is_empty() {
                     ui.heading(RichText::new("An Error Occurred, Please Try Again").color(Color32::RED));
                 }
+                let mut claimvec:Vec<u32> = Vec::new();
+                for i in claimed.claimed.iter_mut() {
+                    claimvec.push(*i);
+                }
             for (k, v) in list.iter_mut() {
-                if !self.claimed.contains(k) && DateTime::parse_from_rfc3339(v.foundAt.as_str()).unwrap().hour() == Utc::now().hour() {
+                if !claimvec.contains(&k.parse().unwrap()) && DateTime::parse_from_rfc3339(v.foundAt.as_str()).unwrap().hour() == Utc::now().hour() {
 
                     let num = format!("{}:", k);
                     ui.horizontal(|ui| {
