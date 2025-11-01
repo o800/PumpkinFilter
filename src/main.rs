@@ -139,7 +139,7 @@ impl eframe::App for PumpkinFilter {
 
             //egui::ScrollArea::vertical().show(ui, |ui| {ui.heading(self.pumpkins.as_str());});
 
-            let mut list: IndexMap<String, TileData> = serde_json::from_str(self.pumpkins.as_str()).unwrap();
+            let mut list: IndexMap<String, TileData> = serde_json::from_str(self.pumpkins.as_str()).unwrap_or(serde_json::from_str("{}").unwrap());
 
             //ui.heading(list.1.unwrap_or("0".to_string()));
 
@@ -151,7 +151,9 @@ impl eframe::App for PumpkinFilter {
             ui.style_mut().spacing.window_margin = egui::Margin::symmetric(20, 10);
 
             egui::ScrollArea::vertical().show(ui, |ui| {
-
+                if  list.is_empty() {
+                    ui.heading(RichText::new("An Error Occurred, Please Try Again").color(Color32::RED));
+                }
             for (k, v) in list.iter_mut() {
                 if !self.claimed.contains(k) && DateTime::parse_from_rfc3339(v.foundAt.as_str()).unwrap().hour() == Utc::now().hour() {
 
