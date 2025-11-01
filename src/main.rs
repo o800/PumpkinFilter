@@ -6,6 +6,7 @@ use serde::{Deserialize, Serialize};
 use indexmap::IndexMap;
 use egui::{RichText, Color32};
 use egui::TextEdit;
+use chrono::{DateTime, Timelike, Utc};
 
 fn main() {
     let native_options = eframe::NativeOptions {
@@ -151,11 +152,8 @@ impl eframe::App for PumpkinFilter {
 
             egui::ScrollArea::vertical().show(ui, |ui| {
 
-                let mut flag: bool = false;
-
             for (k, v) in list.iter_mut() {
-                if !self.claimed.contains(k) {
-                    flag = true;
+                if !self.claimed.contains(k) && DateTime::parse_from_rfc3339(v.foundAt.as_str()).unwrap().hour() == Utc::now().hour() {
 
                     let num = format!("{}:", k);
                     ui.horizontal(|ui| {
