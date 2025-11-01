@@ -1,3 +1,4 @@
+#![windows_subsystem = "windows"]
 use eframe::egui;
 use curl::easy::Easy;
 use eframe::emath::Align;
